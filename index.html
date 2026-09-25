@@ -2,169 +2,159 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HVX — File Compressor</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HVX — Smart File Compressor</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600;700&display=swap');
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#050713;color:#f5f7ff;font-family:Inter,sans-serif}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(rgba(0,245,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.035) 1px,transparent 1px);background-size:45px 45px}
-header{position:sticky;top:0;z-index:5;padding:18px 7%;display:flex;justify-content:space-between;background:#050713dd;backdrop-filter:blur(16px);border-bottom:1px solid #00f5ff22}
-.logo{font:800 27px Orbitron;letter-spacing:5px}.logo span{color:#00f5ff;text-shadow:0 0 15px #00f5ff}
-nav a{color:#aeb7d2;text-decoration:none;margin-left:25px;font-size:14px}nav a:hover{color:#00f5ff}
-.hero{text-align:center;padding:80px 20px 35px}.badge{display:inline-block;color:#00f5ff;border:1px solid #00f5ff44;border-radius:99px;padding:8px 14px;font-size:11px;letter-spacing:2px}
-h1{font:800 clamp(42px,8vw,82px)/.95 Orbitron;margin:25px 0 18px}.grad{background:linear-gradient(90deg,#00f5ff,#fff,#ff2bd6);-webkit-background-clip:text;color:transparent}
-.hero p{max-width:650px;margin:auto;color:#8993b1;line-height:1.7}
-.wrap{width:min(1000px,92%);margin:30px auto 90px}
-.drop{min-height:280px;border:1px dashed #00f5ff66;border-radius:26px;background:#0d1226dd;display:grid;place-items:center;text-align:center;transition:.25s}.drop.drag{border-color:#00f5ff;box-shadow:0 0 45px #00f5ff18}
-.icon{font-size:62px;animation:float 3s ease-in-out infinite}@keyframes float{50%{transform:translateY(-8px)}}
-.drop h2{font-family:Orbitron}.drop p{color:#8993b1}.fileInput{display:none}
-.btn{border:0;border-radius:11px;padding:13px 20px;font-weight:800;cursor:pointer;transition:.2s}.primary{background:#00f5ff;color:#001014;box-shadow:0 0 25px #00f5ff33}.primary:hover{transform:translateY(-2px);box-shadow:0 0 35px #00f5ff55}
-.panel{margin-top:20px;padding:22px;background:#0d1226dd;border:1px solid #00f5ff22;border-radius:20px}
-.controls{display:grid;grid-template-columns:1fr 150px 120px;gap:12px;align-items:end}.field label{display:block;color:#8993b1;font-size:12px;margin-bottom:7px}.field input,.field select{width:100%;padding:13px;border-radius:10px;border:1px solid #ffffff14;background:#070b19;color:#fff;outline:none}.field input:focus,.field select:focus{border-color:#00f5ff}
-#qualityRow{margin-top:18px}.qualityLine{display:flex;justify-content:space-between;color:#8993b1;font-size:12px}.qualityLine b{color:#00f5ff}input[type=range]{width:100%;accent-color:#00f5ff}
-.files{display:grid;gap:12px;margin-top:20px}.file{display:grid;grid-template-columns:50px 1fr auto;gap:14px;align-items:center;padding:15px;border:1px solid #ffffff10;background:#0d1226e8;border-radius:16px}.fileIcon{width:50px;height:50px;display:grid;place-items:center;background:#00f5ff0f;border-radius:12px;font-size:23px}.name{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.meta{font-size:12px;color:#8993b1;margin-top:5px}.result{text-align:right;font-size:12px}.saved{color:#00f5ff;font-weight:700}.warn{color:#ffbd59}.actions{margin-top:8px;display:flex;gap:7px;justify-content:flex-end}.mini{padding:7px 10px;border-radius:8px;border:1px solid #ffffff16;background:#ffffff08;color:#fff;cursor:pointer}.download{color:#00f5ff}.delete{color:#ff668f}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.stat{text-align:center;padding:22px;background:#0d1226dd;border:1px solid #00f5ff18;border-radius:18px}.num{font:800 25px Orbitron;color:#00f5ff}.label{font-size:11px;color:#8993b1;margin-top:6px}
-.toast{position:fixed;right:20px;bottom:20px;padding:14px 17px;background:#11182d;border:1px solid #00f5ff;border-radius:12px;transform:translateY(120px);opacity:0;transition:.25s;z-index:20}.toast.show{transform:none;opacity:1}
-footer{text-align:center;color:#68718f;border-top:1px solid #ffffff0d;padding:30px}footer b{color:#00f5ff}
-@media(max-width:700px){nav a{margin-left:10px;font-size:12px}.hero{padding-top:60px}.controls{grid-template-columns:1fr 1fr}.controls .full{grid-column:1/-1}.file{grid-template-columns:45px 1fr}.result{grid-column:2;text-align:left}.actions{justify-content:flex-start}.stats{grid-template-columns:1fr}}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+:root{--bg:#f5f7fb;--card:#fff;--ink:#111827;--muted:#697386;--line:#e6eaf0;--accent:#5b4cff;--accent2:#7c6cff;--green:#12a66a;--danger:#e34d6f;--shadow:0 18px 50px #18203312}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif}
+header{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:10}
+.logo{font:700 25px "Space Grotesk";letter-spacing:-1px}.logo i{font-style:normal;color:var(--accent)}
+nav{display:flex;gap:25px}nav a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600}nav a:hover{color:var(--accent)}
+.hero{max-width:1150px;margin:auto;padding:55px 25px 25px;display:flex;justify-content:space-between;gap:30px;align-items:end}
+.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.hero h1{font:700 clamp(38px,6vw,68px)/.98 "Space Grotesk";letter-spacing:-3px;margin:12px 0}.hero h1 span{color:var(--accent)}.hero p{max-width:650px;color:var(--muted);line-height:1.7;margin:0}
+.wrap{max-width:1150px;margin:auto;padding:20px 25px 80px}.layout{display:grid;grid-template-columns:290px 1fr;gap:22px}
+.sidebar,.main{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.sidebar{padding:22px;height:max-content}.side-title{font:700 17px "Space Grotesk";margin-bottom:18px}.setting{margin-bottom:20px}.setting label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}.target{display:grid;grid-template-columns:1fr 85px}.target input,.target select{width:100%;height:45px;border:1px solid var(--line);background:#fafbfc;padding:0 12px;font:600 14px "DM Sans";outline:none}.target input{border-radius:10px 0 0 10px}.target select{border-radius:0 10px 10px 0;border-left:0}.quality{width:100%;accent-color:var(--accent)}
+.mode{display:grid;gap:8px}.mode button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px;text-align:left;cursor:pointer;color:var(--muted);font-weight:600}.mode button.active{border-color:#c9c4ff;background:#f2f0ff;color:var(--accent)}
+.main{padding:25px}.drop{min-height:350px;border:2px dashed #d8dce5;border-radius:18px;display:grid;place-items:center;text-align:center;background:#fafbfe;transition:.2s}.drop.drag{border-color:var(--accent);background:#f5f3ff}.upload-icon{width:75px;height:75px;margin:auto;border-radius:22px;background:#eeeaff;color:var(--accent);display:grid;place-items:center;font-size:33px}.drop h2{font:700 24px "Space Grotesk";margin:17px 0 8px}.drop p{color:var(--muted);margin:0 0 20px;font-size:14px}.choose{display:inline-block;background:var(--accent);color:white;border:0;border-radius:10px;padding:13px 19px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px #5b4cff2c}.choose input{display:none}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px}.toolbar h3{font:700 18px "Space Grotesk";margin:0}.clear{border:0;background:#f3f4f7;color:var(--muted);padding:9px 12px;border-radius:9px;cursor:pointer;font-weight:600}
+.files{display:grid;gap:10px}.file{display:grid;grid-template-columns:54px 1fr auto;gap:14px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:14px}.thumb{width:54px;height:54px;border-radius:11px;background:#f1f2f6;display:grid;place-items:center;font-size:25px;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}.name{font-weight:700;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.meta{font-size:12px;color:var(--muted);margin-top:4px}.status{text-align:right;font-size:12px}.saved{color:var(--green);font-weight:800}.warn{color:#b7791f}.actions{display:flex;justify-content:flex-end;gap:7px;margin-top:7px}.action{border:1px solid var(--line);background:#fff;padding:7px 9px;border-radius:8px;cursor:pointer;text-decoration:none;font-size:12px;font-weight:700}.download{color:var(--accent)}.delete{color:var(--danger)}
+.empty{color:var(--muted);text-align:center;padding:25px;font-size:13px}.compress{width:100%;margin-top:18px;height:48px;border:0;border-radius:11px;background:var(--accent);color:white;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 10px 25px #5b4cff25}.compress:hover{background:#4e40eb}.compress:disabled{opacity:.6;cursor:wait}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}.stat{border:1px solid var(--line);border-radius:14px;padding:16px}.stat b{display:block;font:700 21px "Space Grotesk"}.stat span{color:var(--muted);font-size:11px}
+.note{margin-top:20px;padding:14px;border-radius:12px;background:#f8f8ff;color:var(--muted);font-size:12px;line-height:1.6}.note b{color:var(--ink)}
+.toast{position:fixed;right:20px;bottom:20px;background:#171a27;color:#fff;padding:13px 16px;border-radius:10px;transform:translateY(100px);opacity:0;transition:.25s;z-index:20}.toast.show{transform:none;opacity:1}
+footer{text-align:center;color:#8a93a5;padding:25px;border-top:1px solid var(--line);font-size:13px}footer b{color:var(--accent)}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{order:2}.main{order:1}.hero{display:block}.hero p{margin-bottom:10px}}
+@media(max-width:600px){nav{gap:10px}nav a{font-size:12px}.hero,.wrap{padding-left:16px;padding-right:16px}.file{grid-template-columns:45px 1fr}.thumb{width:45px;height:45px}.status{grid-column:2;text-align:left}.actions{justify-content:flex-start}.stats{grid-template-columns:1fr}.main{padding:15px}}
 </style>
 </head>
 <body>
-<header><div class="logo">H<span>V</span>X</div><nav><a href="#compress">Compress</a><a href="#files">Files</a></nav></header>
+<header><div class="logo">H<span>V</span>X</div><nav><a href="#compressor">Compressor</a><a href="#files">My Files</a></nav></header>
 
 <section class="hero">
-<div class="badge">⚡ NEXT-GEN FILE OPTIMIZER</div>
-<h1>COMPRESS<br><span class="grad">TO YOUR SIZE.</span></h1>
-<p>Choose a target size in KB or MB and HVX will try to reduce supported images to that size.</p>
+<div>
+<div class="eyebrow">Smart file compression</div>
+<h1>Make files <span>smaller.</span><br>Keep control.</h1>
+<p>Set the size you want, upload your files, and let HVX optimize supported images directly in your browser.</p>
+</div>
 </section>
 
-<main class="wrap" id="compress">
+<main class="wrap" id="compressor">
+<div class="layout">
+<aside class="sidebar">
+<div class="side-title">Compression settings</div>
+<div class="setting">
+<label>TARGET FILE SIZE</label>
+<div class="target"><input id="target" type="number" min="1" value="500"><select id="unit"><option>KB</option><option>MB</option></select></div>
+</div>
+<div class="setting">
+<label>MAXIMUM QUALITY <span id="qText">85%</span></label>
+<input class="quality" id="quality" type="range" min="20" max="100" value="85">
+</div>
+<div class="setting">
+<label>MODE</label>
+<div class="mode"><button class="active" id="balanced">⚖ Balanced</button><button id="qualityMode">✨ Quality first</button><button id="sizeMode">📉 Smallest possible</button></div>
+</div>
+<div class="note"><b>Privacy</b><br>In this version, supported images are processed locally in your browser. They aren't automatically uploaded to a server.</div>
+</aside>
+
+<section class="main">
 <div class="drop" id="drop">
 <div>
-<div class="icon">☁️</div>
-<h2>DROP YOUR FILES</h2>
-<p>JPG, JPEG, PNG and WebP are supported for compression.</p>
-<label class="btn primary">📁 Choose Files <input class="fileInput" id="input" type="file" multiple></label>
+<div class="upload-icon">↑</div>
+<h2>Drop files here</h2>
+<p>or choose files from your device</p>
+<label class="choose">Choose files <input id="input" type="file" multiple></label>
+<p style="margin-top:16px;font-size:11px">JPG • JPEG • PNG • WebP</p>
 </div>
 </div>
 
-<div class="panel">
-<div class="controls">
-<div class="field"><label>TARGET SIZE</label><input id="target" type="number" min="1" step="1" value="500" placeholder="Example: 500"></div>
-<div class="field"><label>UNIT</label><select id="unit"><option value="KB">KB</option><option value="MB">MB</option></select></div>
-<button class="btn primary full" id="compress">⚡ Compress</button>
-</div>
-<div id="qualityRow">
-<div class="qualityLine"><span>Maximum quality</span><b id="qualityText">85%</b></div>
-<input id="quality" type="range" min="20" max="100" value="85">
-</div>
-<button class="btn" id="clear" style="width:100%;margin-top:14px;background:#ffffff09;color:#fff;border:1px solid #ffffff12">Clear all</button>
-</div>
-
-<div class="files" id="files"></div>
+<div class="toolbar" id="files"><h3>Your files</h3><button class="clear" id="clear">Clear all</button></div>
+<div class="files" id="list"><div class="empty">No files selected yet.</div></div>
+<button class="compress" id="compress">Compress selected files</button>
 
 <div class="stats">
-<div class="stat"><div class="num" id="count">0</div><div class="label">FILES</div></div>
-<div class="stat"><div class="num" id="original">0 B</div><div class="label">ORIGINAL SIZE</div></div>
-<div class="stat"><div class="num" id="saved">0 B</div><div class="label">SAVED</div></div>
+<div class="stat"><b id="count">0</b><span>FILES</span></div>
+<div class="stat"><b id="original">0 B</b><span>ORIGINAL</span></div>
+<div class="stat"><b id="saved">0 B</b><span>SAVED</span></div>
+</div>
+</section>
 </div>
 </main>
-
-<footer>Made with ⚡ by <b>HVX</b></footer>
+<footer>HVX — <b>Smart file compression</b></footer>
 <div class="toast" id="toast"></div>
 
 <script>
-const input=document.getElementById("input"),drop=document.getElementById("drop"),filesEl=document.getElementById("files");
-const targetEl=document.getElementById("target"),unitEl=document.getElementById("unit"),qualityEl=document.getElementById("quality");
-const qualityText=document.getElementById("qualityText"),compressBtn=document.getElementById("compress");
-const countEl=document.getElementById("count"),originalEl=document.getElementById("original"),savedEl=document.getElementById("saved"),toast=document.getElementById("toast");
-let files=[],results=[];
+const input=document.getElementById("input"),drop=document.getElementById("drop"),list=document.getElementById("list");
+const target=document.getElementById("target"),unit=document.getElementById("unit"),quality=document.getElementById("quality");
+const qText=document.getElementById("qText"),compress=document.getElementById("compress"),toast=document.getElementById("toast");
+let files=[],results=[],mode="balanced";
 
-input.onchange=e=>add(e.target.files);
+quality.oninput=()=>qText.textContent=quality.value+"%";
+input.onchange=e=>add([...e.target.files]);
 ["dragenter","dragover"].forEach(x=>drop.addEventListener(x,e=>{e.preventDefault();drop.classList.add("drag")}));
 ["dragleave","drop"].forEach(x=>drop.addEventListener(x,e=>{e.preventDefault();drop.classList.remove("drag")}));
-drop.ondrop=e=>add(e.dataTransfer.files);
-qualityEl.oninput=()=>qualityText.textContent=qualityEl.value+"%";
-
-function add(list){files=[...files,...list];render();stats();show(`${list.length} file${list.length>1?"s":""} added`)}
+drop.ondrop=e=>add([...e.dataTransfer.files]);
+function add(a){files.push(...a);render();stats();show(a.length+" file"+(a.length>1?"s":"")+" added")}
+function bytes(){return Number(target.value)*(unit.value==="MB"?1048576:1024)}
+function icon(f){return f.type.startsWith("image/")?"🖼️":f.type.includes("pdf")?"📕":/docx$/i.test(f.name)?"📘":/xlsx$/i.test(f.name)?"📗":/zip$/i.test(f.name)?"📦":"📄"}
 function render(){
- filesEl.innerHTML="";
+ list.innerHTML="";
+ if(!files.length){list.innerHTML='<div class="empty">No files selected yet.</div>';return}
  files.forEach((f,i)=>{
-  const d=document.createElement("div");d.className="file";
-  d.innerHTML=`<div class="fileIcon">${icon(f)}</div><div><div class="name">${safe(f.name)}</div><div class="meta">${fmt(f.size)} • ${safe(f.type||"Unknown type")}</div></div><div class="result" id="r${i}">Ready</div>`;
-  filesEl.appendChild(d);
+  const d=document.createElement("div");d.className="file";const thumb=f.type.startsWith("image/")?URL.createObjectURL(f):null;
+  d.innerHTML=`<div class="thumb">${thumb?`<img src="${thumb}">`:icon(f)}</div><div><div class="name">${safe(f.name)}</div><div class="meta">${fmt(f.size)} • ${safe(f.type||"Unknown")}</div></div><div class="status" id="s${i}">Ready</div>`;
+  list.appendChild(d);
  });
 }
-function icon(f){if(f.type.startsWith("image/"))return"🖼️";if(f.type.includes("pdf"))return"📕";if(f.type.includes("word")||/\.docx$/i.test(f.name))return"📘";if(f.type.includes("sheet")||/\.xlsx$/i.test(f.name))return"📗";if(/\.zip$/i.test(f.name))return"📦";return"📄"}
-function stats(){countEl.textContent=files.length;originalEl.textContent=fmt(files.reduce((a,f)=>a+f.size,0));savedEl.textContent="0 B"}
-function targetBytes(){return Number(targetEl.value)*((unitEl.value==="MB")?1024*1024:1024)}
-function loadImage(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);res(im)};im.onerror=()=>{URL.revokeObjectURL(u);rej()};im.src=u})}
-
-async function makeImage(file,quality,scale){
- const im=await loadImage(file), max=2400;
- let w=im.naturalWidth*scale,h=im.naturalHeight*scale;
- if(Math.max(w,h)>max){const s=max/Math.max(w,h);w*=s;h*=s}
- w=Math.max(1,Math.round(w));h=Math.max(1,Math.round(h));
- const c=document.createElement("canvas");c.width=w;c.height=h;
- const ctx=c.getContext("2d");ctx.imageSmoothingQuality="high";ctx.drawImage(im,0,0,w,h);
- const type=file.type==="image/png"?"image/webp":"image/jpeg";
- const blob=await new Promise(r=>c.toBlob(r,type,quality));
- if(!blob)throw Error("compression failed");
- return blob;
+function load(file){return new Promise((ok,no)=>{let u=URL.createObjectURL(file),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);ok(im)};im.onerror=no;im.src=u})}
+async function make(file,q,scale){
+ const im=await load(file);let w=im.naturalWidth*scale,h=im.naturalHeight*scale,max=2400;
+ if(Math.max(w,h)>max){let s=max/Math.max(w,h);w*=s;h*=s}
+ w=Math.max(1,Math.round(w));h=Math.max(1,Math.round(h));let c=document.createElement("canvas");c.width=w;c.height=h;
+ c.getContext("2d").drawImage(im,0,0,w,h);let type=file.type==="image/png"?"image/webp":"image/jpeg";
+ return await new Promise(r=>c.toBlob(r,type,q));
 }
-
-async function compressToTarget(file,target,maxQuality){
- let best=null,scale=1;
- for(let pass=0;pass<5;pass++){
-  let lo=.05,hi=maxQuality/100,bestPass=null;
-  for(let i=0;i<9;i++){
-   const q=(lo+hi)/2,b=await makeImage(file,q,scale);
-   if(!bestPass||b.size<bestPass.size)bestPass=b;
-   if(b.size>target)hi=q;else lo=q;
+async function optimize(file,targetBytes,maxQ){
+ let scale=1,best=null;
+ for(let pass=0;pass<6;pass++){
+  let lo=.03,hi=maxQ/100;
+  for(let i=0;i<10;i++){
+   let q=(lo+hi)/2,b=await make(file,q,scale);
+   if(!best||b.size<best.size)best=b;
+   if(b.size>targetBytes)hi=q;else lo=q;
   }
-  if(bestPass && (!best||bestPass.size<best.size))best=bestPass;
-  if(best && best.size<=target)return best;
-  scale*=.82;
+  if(best&&best.size<=targetBytes)return best;
+  scale*=.78;
  }
  return best;
 }
-
-compressBtn.onclick=async()=>{
+compress.onclick=async()=>{
  if(!files.length)return show("Choose files first.");
- const target=targetBytes();
- if(!target||target<1024)return show("Enter a valid target size.");
- results=[];
- compressBtn.disabled=true;compressBtn.textContent="⚡ COMPRESSING...";
+ if(bytes()<1024)return show("Enter a larger target size.");
+ results=[];compress.disabled=true;compress.textContent="Optimizing…";
  for(let i=0;i<files.length;i++){
-  const f=files[i],r=document.getElementById("r"+i);
-  if(!f.type.startsWith("image/")){r.innerHTML='<span class="warn">Not supported yet</span>';continue}
+  let f=files[i],s=document.getElementById("s"+i);
+  if(!f.type.startsWith("image/")){s.innerHTML='<span class="warn">Not supported yet</span>';continue}
   try{
-   r.textContent="Optimizing...";
-   const blob=await compressToTarget(f,target,Number(qualityEl.value));
-   const name=f.name.replace(/\.[^.]+$/,"")+(blob.type==="image/webp"?".webp":".jpg");
-   const url=URL.createObjectURL(blob);
-   results.push({file:f,blob,url,name});
-   const pct=Math.max(0,Math.round((1-blob.size/f.size)*100));
-   const note=blob.size<=target?`${fmt(blob.size)} • ${pct}% smaller`:`${fmt(blob.size)} • target not reached`;
-   r.innerHTML=`<span class="${blob.size<=target?"saved":"warn"}">${note}</span><div class="actions"><a class="mini download" href="${url}" download="${safe(name)}">⬇ Download</a><button class="mini delete" onclick="removeResult(${results.length-1})">🗑 Delete</button></div>`;
-  }catch(e){r.innerHTML='<span class="warn">Could not compress</span>'}
+   s.textContent="Working…";
+   let maxQ=Number(quality.value);if(mode==="quality")maxQ=Math.max(maxQ,92);if(mode==="small")maxQ=Math.min(maxQ,65);
+   let b=await optimize(f,bytes(),maxQ),url=URL.createObjectURL(b),name=f.name.replace(/\.[^.]+$/,"")+(b.type==="image/webp"?".webp":".jpg");
+   let item={file:f,blob:b,url,name};results.push(item);let saved=Math.max(0,f.size-b.size),pct=Math.max(0,Math.round(saved/f.size*100));
+   s.innerHTML=`<span class="${b.size<=bytes()?"saved":"warn"}">${fmt(b.size)} · ${b.size<=bytes()?pct+"% smaller":"target not reached"}</span><div class="actions"><a class="action download" href="${url}" download="${safe(name)}">Download</a><button class="action delete" onclick="removeResult(${results.length-1})">Delete</button></div>`;
+  }catch(e){s.innerHTML='<span class="warn">Could not compress</span>'}
  }
- updateSaved();compressBtn.disabled=false;compressBtn.textContent="⚡ Compress";show("Compression finished");
-};
-
-function removeResult(index){
- const x=results[index];if(!x)return;
- URL.revokeObjectURL(x.url);
- const i=files.indexOf(x.file);if(i>-1)files.splice(i,1);
- results.splice(index,1);render();
- // Re-render result cards with remaining results
- results.forEach((item,j)=>{const pos=files.indexOf(item.file);if(pos>-1)document.getElementById("r"+pos).innerHTML=`<span class="${item.blob.size<=targetBytes()?"saved":"warn"}">${fmt(item.blob.size)} • ${Math.max(0,Math.round((1-item.blob.size/item.file.size)*100))}% smaller</span><div class="actions"><a class="mini download" href="${item.url}" download="${safe(item.name)}">⬇ Download</a><button class="mini delete" onclick="removeResult(${j})">🗑 Delete</button></div>`});
- stats();updateSaved();show("File deleted from this session");
+ updateSaved();compress.disabled=false;compress.textContent="Compress selected files";show("Done");
 }
-function updateSaved(){savedEl.textContent=fmt(results.reduce((a,x)=>a+Math.max(0,x.file.size-x.blob.size),0))}
-document.getElementById("clear").onclick=()=>{results.forEach(x=>URL.revokeObjectURL(x.url));files=[];results=[];input.value="";render();stats();show("Files cleared")}
-function fmt(n){if(!n)return"0 B";const u=["B","KB","MB","GB"],i=Math.min(u.length-1,Math.floor(Math.log(n)/Math.log(1024)));return (n/1024**i).toFixed(i?2:0)+" "+u[i]}
+function removeResult(n){let x=results[n];if(!x)return;URL.revokeObjectURL(x.url);let i=files.indexOf(x.file);if(i>-1)files.splice(i,1);results.splice(n,1);render();results.forEach((r,j)=>{let p=files.indexOf(r.file);if(p>-1)document.getElementById("s"+p).innerHTML=`<span class="${r.blob.size<=bytes()?"saved":"warn"}">${fmt(r.blob.size)} · ${Math.max(0,Math.round((1-r.blob.size/r.file.size)*100))}% smaller</span><div class="actions"><a class="action download" href="${r.url}" download="${safe(r.name)}">Download</a><button class="action delete" onclick="removeResult(${j})">Delete</button></div>`});stats();updateSaved();show("File removed")}
+document.getElementById("clear").onclick=()=>{results.forEach(r=>URL.revokeObjectURL(r.url));files=[];results=[];input.value="";render();stats();show("Cleared")}
+function updateSaved(){saved.textContent=fmt(results.reduce((a,r)=>a+Math.max(0,r.file.size-r.blob.size),0))}
+function stats(){count.textContent=files.length;original.textContent=fmt(files.reduce((a,f)=>a+f.size,0));saved.textContent="0 B"}
+document.querySelectorAll(".mode button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".mode button").forEach(x=>x.classList.remove("active"));b.classList.add("active");mode=b.id==="qualityMode"?"quality":b.id==="sizeMode"?"small":"balanced"});
+function fmt(n){if(!n)return"0 B";let u=["B","KB","MB","GB"],i=Math.min(3,Math.floor(Math.log(n)/Math.log(1024)));return (n/1024**i).toFixed(i?2:0)+" "+u[i]}
 function safe(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function show(s){toast.textContent=s;toast.classList.add("show");clearTimeout(show.t);show.t=setTimeout(()=>toast.classList.remove("show"),2400)}
+function show(t){toast.textContent=t;toast.classList.add("show");clearTimeout(show.t);show.t=setTimeout(()=>toast.classList.remove("show"),2200)}
 </script>
 </body>
 </html>
